@@ -1,0 +1,325 @@
+﻿*{ padding:0; margin:0;}
+
+body {
+	background-color: #f0f0f0;
+	font-family: helvetica, "Times New Roman", Times, serif;
+	font-size:12px;
+}
+
+img{ vertical-align:middle; border:none; }
+
+a{ color:#a6cc52; text-decoration:none;}
+
+a:focus {
+	outline: none;
+}
+.clear {
+	clear: both;
+	line-height:0;
+	font-size:0;
+}
+.fl{ float:left;}
+.fr{ float:right;}
+
+.w85{ width:85px;}
+.w200{ width:200px;}
+.marr100{ margin-right:100px;}
+.mart10{ margin-top:10px;}
+
+
+h1{ font-size:18px;}
+h3{ font-size:14px;}
+h1 span{ font-weight:normal;}
+
+.checkbox, .radio {
+	width: 19px;
+	height: 25px;
+	padding: 0 5px 0 0;
+	background: url(../images/custom_checkbox.png) no-repeat;
+	display: block;
+	clear: left;
+	float: left;
+}
+
+#page-wrap {
+	position: relative;
+	width: 851px;
+	margin:7px auto;
+        overflow-y: no-display;
+}
+
+.content_pan{ background:#FFFFFF; border:1px solid #c4cde0; padding:14px 0 14px 16px; -webkit-border-radius: 3px;
+border-radius: 3px; }
+
+
+ul#main-nav {
+	margin-left: 24px;
+}
+ul#main-nav li {
+	float: left;
+	position: relative;
+	margin-left: -24px;
+	display: inline;
+}
+ul#main-nav li a {
+	position: relative;
+	width: 95px;
+	height: 23px;
+	display: block;
+	background-image: url('../images/tabs.png');
+	background-position:left top;
+	color: #44403b;
+	text-decoration: none;
+	font-size: 14px;
+	padding-top: 3px;
+	text-align: left;
+	padding-left: 0px;
+	font-weight: bold;
+	text-align:center;
+}
+ul#main-nav li.tab1 a {
+	background-image: url('../images/tab-home.png'); width:78px; padding:3px 0 0 21px; width:73px; text-align:left;
+}
+ul#main-nav li.tab1c a {
+	background-image: url('../images/tab-home.png'); width:78px; padding:3px 0 0 21px; width:73px; text-align:left;
+	background-position: bottom;
+}
+ul#main-nav li.current a {
+	background-position: bottom;
+	color: #ffffff;
+}
+ul#main-nav li a:hover {
+	background-position: bottom;
+	color: #ffffff;
+}
+ul#main-nav li.current a:hover {
+	background-position: bottom; /*To Prevent the Current tab from changing colour on hover*/
+	color: #ffffff;
+}
+ul#main-nav li.current, ul#main-nav li.tab1c {
+	z-index: 100;
+}
+ul#main-nav li.tab1 {
+	z-index: 100;
+}
+ul#main-nav li.tab2 {
+	z-index: 99;
+}
+ul#main-nav li.tab3 {
+	z-index: 98;
+}
+ul#main-nav li.tab4 {
+	z-index: 97;
+}
+ul#main-nav li.tab5 {
+	z-index: 96;
+}
+ul#main-nav li.tab6 {
+	z-index: 95;
+}
+ul#main-nav li.tab7 {
+	z-index: 94;
+}
+
+.tab_bottom_pan{ 
+-webkit-border-radius: 0px 5px 5px 5px;
+border-radius: 0px 5px 5px 5px; 
+background:url(../images/tab_lbg.jpg) repeat-x 0 0;
+height:43px;
+padding:16px 11px 0 11px; 
+margin-right:16px; 
+}
+
+.btn{-webkit-border-radius:5px;
+border-radius:5px; 
+background:url(../images/btn_bg.jpg) repeat-x 0 0;
+padding:5px 8px;
+line-height:26px;
+font-size:14px;
+text-decoration:none;
+font-weight:bold;
+color:#FFFFFF;
+text-shadow: 0px 2px 3px #5e5d5e;
+filter: dropshadow(color=#5e5d5e, offx=0, offy=2);
+}
+
+.tab_l{ width:475px; float:left;}
+.tab_r{ width:320px; float:right; display:table-row;}
+
+.tab_r span{ display:inline-block; margin-right:20px; font-size:13px; font-weight:bold; vertical-align:middle; height:20px; }
+.tab_r span span{padding-top:0px; margin:0 0 0 5px;}
+.tab_r span.checkbox{ margin:0; padding:0;}
+.tab_r img{ vertical-align:middle;}
+
+
+.gray_box{ background:url(../images/box_bg.jpg) repeat-x 0 0; border:1px solid #f2f2f2;  -webkit-border-radius:5px; border-radius:5px;height:67px; width:243px; padding:6px; position:relative; }
+
+.gray_boxs{ background:url(../images/box_bg.jpg) repeat-x 0 0; border:1px solid #f2f2f2;  -webkit-border-radius:5px; border-radius:5px;height:67px; width:136px; padding:6px; }
+
+.gray_box:hover{ background:url(../images/g_boxbg.jpg) repeat-x 0 0; border:1px solid #f2f2f2;  -webkit-border-radius:5px; border-radius:5px;height:67px; width:243px; padding:6px; position:relative; cursor:pointer; }
+
+.listing_r li{ background:url(../images/listing_bg.jpg) repeat-x 0 0; list-style:none; width:106px; height:31px; -webkit-border-radius:5px; border-radius:5px;  margin:0px 0px 3px 0; font-size:12px; cursor:pointer; position:relative; /*overflow-x:hidden;*/ padding:10px; }
+
+.listing_r li img{ margin:0 5px 0 0; float:left; width:30px; height:30px;}
+.listing_r li span{width:70px; height:50px;  float:left;  margin:0px 0; display:table-row; }
+.listing_r li span span{display:table-cell;  vertical-align:middle; }
+
+
+.listing { margin:17px 0;}
+
+.listing li{ background:url(../images/box_bg.jpg) repeat-x 0 0; border:1px solid #f2f2f2;  list-style:none; width:197px; height:71px; -webkit-border-radius:5px;
+border-radius:5px;  margin:5px 7px 5px 0; font-size:14px; float:left; cursor:pointer; position:relative;}
+
+.listing li:hover{ background:url(../images/listing_bgh.jpg) repeat-x 0 0;}
+
+.listing li img{ margin:10px; float:left;}
+.listing li span{width:120px; height:50px;  float:left;  margin:10px 0; display:table-row; }
+.listing li span span{display:table-cell;  vertical-align:middle; }
+
+.listing li div.popup, .gray_box div.popup, .green_box div.popup{
+	  display:none;
+      position: absolute;
+	  left:-265px;
+	  top:0;
+      width: 234px;
+	  /*height:178px;*/
+      padding:0;
+      font-size: 12px;
+	  line-height:20px;
+      text-align: left;
+      color: #666666;      
+	  z-index:9999999;
+	  padding:14px;
+	  margin:0;
+
+	  background:url(../images/mid_po_box2.png) no-repeat 0 0\9;
+	  z-index:9999999; 
+	  background:#FFF;
+	  
+	  -webkit-border-radius:5px;
+	  border-radius:5px; 
+	  -webkit-box-shadow: 0px 0px 7px 1px ;
+	  box-shadow: 0px 0px 7px 1px ; 
+	  border:1px solid #a6a7ac;
+
+	  /*background:url(../images/mid_po_box.png) no-repeat 0 0;*/
+	  /*background:url(../images/arrox_right.png) no-repeat right top #990 ;*/
+
+	 /* opacity:0;
+	  filter:alpha(opacity=00);*/
+}
+
+div.popup:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent #FFFFFF;
+      top: 10px;
+      left: 262px;
+}
+
+/*div.popup .tooltip{ position:absolute; top: 10px; left: 285px; background:url(../images/arrox_right.png) repeat-x 0 0; width:10px; height:21px;}*/
+
+.listing li:hover div.popup, .green_box:hover div.popup, .gray_box:hover div.popup{ 
+left:-265px; 
+display:block;
+/*opacity:1;
+filter:alpha(opacity=100);*/
+}
+
+ div.popup p { clear:both; border-top:1px solid #a6a7ac; margin-top:5px; padding:5px 0 0 0;}
+ div.popup img{ margin:0 10px 5px 0;}
+
+
+
+
+
+
+
+
+
+
+
+/*.listing li div.popup {
+      position: absolute;
+	  left:-350px;
+	  top:0;
+      width: 265px;
+      height: 155px;
+      line-height: 20px;
+      padding: 10px;
+      font-size: 12px;
+      text-align: left;
+      color: #666666;
+      background:#FFFFFF;
+      border-radius: 5px;
+	  -webkit-box-shadow: 0px 0px 7px 1px ;
+	  box-shadow: 0px 0px 7px 1px ; 
+	  z-index:9999999;
+	  opacity:0;
+	  filter:alpha(opacity=00);
+	-webkit-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
+	-ms-transition: all 0.5s ease-in;
+	-o-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+
+}*/
+
+
+.jcarousel-skin-tango{border-bottom:1px solid #d6d6d6; width:600px; margin-left:40px;}
+.jcarousel span{ background:url(../images/c_devider.png) no-repeat 0 6px; display:inline-block; padding:0 50px 0 10px; font-size:14px; font-weight:bold; color:#9da0ab; line-height:18px; z-index:200; position:relative;}
+.jcarousel span.bn { background:none;}
+
+.jcarousel-item{ position:relative; overflow:visible; }
+.hovertip{ position:absolute !important; left:0; top:0; background: url(../images/scrollbar.png) no-repeat right top #eeeeee; -webkit-border-radius:5px; border-radius:5px; height:400px; width:170px; z-index:90; padding:40px 10px 10px 10px; display:none; list-style:none;}
+/*.jcarousel-item:hover .gray_popup{ display:block;  }*/
+
+.hovertip li{ background:url(../images/bdr.jpg) repeat-x top; padding:8px 0; list-style:none;}
+
+
+
+
+
+.row li{  /*height:99px; overflow:hidden;*/ list-style:none; border-bottom:1px solid #d6d6d6; clear:both; }
+.row li .row_l{ float:left; width:34px; height:100%; padding:8px 0; margin-right:8px; color:#9da0ab; display: table-row;}
+.row li .row_l span{ display: table-cell; vertical-align: middle;}
+.row li .row_r{float:left; width:595px; height:100%; padding:8px 0;}
+.ico_man{ background:url(../images/icon_01.png) no-repeat 0 0; width:31px; height:44px; color:#ffffff; font-weight:bold; text-align:right; padding:1px 10px 0 0; margin-top:25px; }
+
+
+
+/* Custom scroll*/
+
+ /* Height & width for the container - The rest is done by the jQuery part. */
+  div[rel='scrollcontent1'] { width:650px; height: 428px; float:left; margin:22px 17px 22px 0; padding-bottom:5px;}
+  /* Basic CSS for the elements - If rel is "scrollcontent1", style its scrollbar by referring to ".scrollcontent-content", ".scrollcontent-bar", etc. */
+  .scrollcontent1-content { /* background: #eee; */ } /* for vertical content, no explicit width is required for inner DIV */
+  .scrollcontent1-bar { width:7px; background: #ebebeb; border-radius: 4px; border:2px solid #ebebeb; /*box-shadow: inset 0px 0px 5px #444444;*/ overflow: hidden; }
+  .scrollcontent1-drag { background:url(../images/custom-scroll-bar.png) no-repeat 0 0; border-radius: 4px; cursor: pointer; }
+  
+  
+    div[rel='scrollcontent2'] { width: 147px; height: 428px; float:left; margin:22px 0px; padding-bottom:5px; }
+  
+  /* Basic CSS for the elements - If rel is "scrollcontent2", style its scrollbar by referring to ".scrollcontent2-content", ".scrollcontent2-bar", etc. */
+  /*.scrollcontent2-content { width: 999px; }  for horizontal content, width should be set to total width of all floated inner container elements */
+  .scrollcontent2-bar { width:7px; background: #ebebeb; border-radius: 4px; border:2px solid #ebebeb; /*box-shadow: inset 0px 0px 5px #444444;*/ overflow: hidden;}
+  .scrollcontent2-drag {background:url(../images/custom-scroll-bar.png) no-repeat 0 0; border-radius: 4px; cursor: pointer; }
+  .scrollcontent2-content{ padding:0 6px;}
+
+   
+   div[rel='scrollcontent3'] { width: 155px; height: 400px; margin:0; position:absolute; /*float:left; margin:22px 0px; padding-bottom:5px;*/ }
+  
+  .scrollcontent3-bar { width:7px; background: #ebebeb; border-radius: 4px; border:2px solid #ebebeb; overflow: hidden;}
+  .scrollcontent3-drag {background:url(../images/custom-scroll-bar.png) no-repeat 0 0; border-radius: 4px; cursor: pointer; }
+  .scrollcontent3-content{ padding:30px 0 ;}
+
+/* Custom scroll end*/
+
+
+
+
+

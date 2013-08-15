@@ -1,0 +1,327 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="jquery/jquery-1.7.2.js" type="text/javascript"></script>
+<script type="text/javascript"  src="jquery/ui/jquery-ui-1.8.21.custom.js" ></script>
+<link rel="stylesheet" type="text/css" href="jquery/themes/pepper-grinder/jquery-ui-1.8.21.custom.css" />
+<title>kovue</title>
+<style>
+<style>
+	.mainDiv{width:1240px;height:620px;display:inline-block;}
+	.mainDivLeft{width:160px;height:600px;float:left; }
+	.mainDivMIddle{width:880px;height:600px;float:left;}
+	.mainDivRight{width:180px;height:600px;float:right;overflow-y:auto;overflow-x:hidden;padding-left:5px;}
+	ul, li {list-style: none outside none;padding: 0;}
+	.timelineSpan{width:178px; float:left; border-left:dotted #666 2px; font-size:12px; }
+	.channelBlock{width:156px; border:1px solid #D4D1BF; border-radius: 6px;;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2); text-align:center; vertical-align:middle; font-size:20px; color: #453821; font-weight: bold; height:100px; margin-top:4px;}
+	/*friend style*/
+	.friendList_cell {background: -moz-linear-gradient(center top , #D3D3D3, #F4F4F4) repeat scroll 0 0 transparent;border: 1px solid #DDDDDD;border-radius: 2px 2px 2px 2px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);cursor: move;font: 13px arial,sans-serif;height: 36px;margin: 10px 20px 13px 0;padding: 4px;position: relative;vertical-align: top;width: 138px;word-wrap: break-word;}
+	.friendList_cell:hover {box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.3);}
+	.frientList_person {height: 36px;position: absolute;width: 36px;}
+	.frientList_name {margin: 4px 4px 4px 40px;}
+	.friendOffline img{opacity : 0.2;filter:gray;}
+	#friendsWindow{ position:absolute; width: auto; height:auto;display:none;border-radius: 6px;;padding:0px 15px 10px; background-color:#EDEDED; z-index:20;}
+	#friendsWindow:before{content: "";width: 0;height: 0;font-size: 0;position: absolute;border: 10px solid transparent; border-bottom-color:#EDEDED;border-right: 0;overflow: hidden;left: -10px; display:inherit;}
+	#friendsWindowClose{ width:16px; height:16px; float:right;}
+	#infoWindow1{width:90px; height:14px; margin:0px; border:1px gray ridge; padding:1px; background-color:#F90; color:#FFF;position:absolute;border-radius: 3px; left:10px; top:600px; font-size:12px; font-weight:200; text-align:center; display:none;}
+	#infoWindow3{width:210px; height:14px; margin:0px; border:1px gray ridge; padding:1px; background-color:#F90; color:#FFF;position:absolute;border-radius: 3px; left:10px; top:600px; font-size:12px; font-weight:200; text-align:center; display:none;}
+	#infoWindow2{width:48px; height:48px; margin:0px; border:0px; padding:1px;position:absolute; left:10px; top:600px; display:none;}
+	.friendsCounter{float: left; margin:0px; border-width:0px; padding:0px; z-index:10; position:relative; left:0px; top:5px; font-size:12px;}
+	/*the jquery scroll style*/
+	.scroll-pane { overflow: auto; width: 99%; float:left; }
+	.scroll-content { width: 4400px; float: left;  position:relative;}
+	.scroll-content-item { width: 110px; height: 100px; float: left; margin: 2px; font-size: 14px; line-height: 20px; text-align: center; border-radius: 4px 3px 3px 4px; box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2); overflow:hidden;}
+	.scroll-content-item:hover {box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.3);}
+	.scroll-content-item-upper{ border-bottom:double gray 3px; margin:3px; height: 60%; text-align:center; vertical-align:bottom;}
+	.scroll-content-item-upper p{ margin:0px 4px 0 4px;}
+	.scroll-content-item-bottom{height: 40%; display:inline-block;}
+	.scroll-content-item-bottom img{float: left; margin:0px; border:0px; padding:0px; position:relative; width:30px; height:30px; cursor:pointer;}
+	.scroll-content-item-bottom img:hover{ width:32px; height:32px; }
+	.scroll-content-item-bottom .friendsDiv{display:none; opacity : 0.8;}
+	* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+	.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; height:1.2em;}
+	.scroll-bar-wrap .ui-slider { background: none; border:0; height: 0.9em; margin: 0 auto;  }
+	.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
+	.scroll-bar-wrap .ui-slider-handle { top:0em; height: 0.9em;}
+	.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%;}
+	</style>
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+		//fetch friends data, fetch data from cods, the returned data is JSON
+		$.getJSON("http://api.cods.pyctex.net/rest/v1/profiles",function(result){
+			var friendsInfoString = "<ul>";
+			$.each(result.entry_list, function(i, field){
+				friendsInfoString += "<li class='friendList_cell' style='-moz-user-select: none;'><img src="+field.avatar_url+" class='frientList_person'><div class='frientList_name'>"+field.name+"</div>"
+				friendsInfoString +="<span style='display:none'>"+field.id+"</span></li>"
+			});
+			friendsInfoString += "</ul>";
+			$(".mainDivRight").html(friendsInfoString);
+			$(".friendList_cell").draggable({
+				helper:"clone",
+				zIndex:1000 });
+		//send request to find out whether friends online or not, if not, gray it avatar.
+		
+		});
+		//fetch program schedule data, program schedule will be stored in xml and xml2json_test.php will parse XML to JSON
+		//draw the program panel. All functionality related to Program schedule panel are included
+		//all jquery events registeration happens after the ajax request, which means we fill the content first and then register the jquery events
+		$.getJSON("phpLab/xml2json/xml2json_test.php",function(result){
+			var date1=new Date();
+			var requestTime = date1.getTime();
+			//draw the timeline
+			var timelineLeft = (60-date1.getMinutes())*3;
+			$("#timeline").css("padding-left",timelineLeft+"px");
+			var timelineString = "";
+			for(var i=1;i<=24;i++){
+				timelineString+="<span class='timelineSpan'>"+(date1.getHours()+i)%24+":00</span>";
+			}
+			$("#timeline").append(timelineString);
+			//draw the programs
+   		 	$.each(result.channels.channel, function(i, field){
+				$(".mainDivLeft").append("<div class='channelBlock'>"+field["@attributes"].name+"</div>");
+				var programString = "<div class='scroll-content'>"
+				$.each(field["program"],function(j, program){
+					var begintime_ms = Date.parse(new Date(program["time"]["starttime"]["@attributes"]["value"].replace(/-/g, "/")));; 
+					var endtime_ms = Date.parse(new Date(program["time"]["endtime"]["@attributes"]["value"].replace(/-/g, "/")));;
+					var cellWidth = 3*Math.floor((endtime_ms-begintime_ms)/60000)-6;
+					var cellLeft = Math.floor((begintime_ms - requestTime )/60000);
+					var displayST = program["time"]["starttime"]["@attributes"]["value"].split(" ");
+					var displayET = program["time"]["endtime"]["@attributes"]["value"].split(" ");
+					programString += "<div class='scroll-content-item ui-widget-header ui-droppable' style='left:"+cellLeft*3+"px; position:absolute; width:"+cellWidth+"px;'>"+"<div class='scroll-content-item-upper'><p>"+program["@attributes"].name+"</p><p>"+displayST[1]+" p.m - "+displayET[1]+" p.m</p></div>"+"<div class='scroll-content-item-bottom'><img class='favIcon' src='png/onebit_46.png'><img class='friendsIcon' src='png/onebit_17.png'>";
+					if(program["friends"]==""){
+						programString += "<span class='friendsCounter'>0</span><div class='friendsDiv'><p>Currently have no friends here</p>";
+						}
+					else{
+						if(program["friends"]["friend"].length==null){
+							programString += "<span class='friendsCounter'>1</span><div class='friendsDiv'>";
+							programString += "<li class='friendList_cell' style='-moz-user-select: none;'><img class='frientList_person' src='"+program["friends"]["friend"].thumbImg+"'><div class='frientList_name'>"+program["friends"]["friend"].name+"</div></li>";
+							}
+						else{
+						programString += "<span class='friendsCounter'>"+program["friends"]["friend"].length+"</span><div class='friendsDiv'>";
+						$.each(program["friends"]["friend"],function(k, friend){
+							programString += "<li class='friendList_cell' style='-moz-user-select: none;'><img class='frientList_person' src='"+friend.thumbImg+"'><div class='frientList_name'>"+friend.name+"</div></li>";
+							})
+						}
+						}
+					programString +="</div></div></div>";
+					//alert(program["@attributes"].name);
+					});
+				programString+="<div class='scroll-content-item ui-widget-header' style='float:right; width:30px;'>>></div> </div>";
+				$(".mainDivMIddle .scroll-pane").append(programString);
+    		});
+		
+		//--------------------------all about slider effect-------------------------------------------------
+		var scrollPane = $( ".scroll-pane" ),
+			scrollContent = $( ".scroll-content" );
+		
+		//build slider
+		var scrollbar = $( ".scroll-bar" ).slider({
+			slide: function( event, ui ) {
+				$("#friendsWindow").hide();
+				if ( scrollContent.width() > scrollPane.width() ) {
+					scrollContent.css( "margin-left", Math.round(
+						ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+					) + "px" );
+				} else {
+					scrollContent.css( "margin-left", 0 );
+				}
+			}
+		});
+		//append icon to handle
+		var handleHelper = scrollbar.find( ".ui-slider-handle" )
+		.mousedown(function() {
+			scrollbar.width( handleHelper.width() );
+		})
+		.mouseup(function() {
+			scrollbar.width( "100%" );
+		})
+		.append( "<span class='ui-icon ui-icon-grip-dotted-vertical'></span>" )
+		.wrap( "<div class='ui-handle-helper-parent'></div>" ).parent();
+		//change overflow to hidden now that slider handles the scrolling
+		scrollPane.css( "overflow", "hidden" );
+		//size scrollbar and handle proportionally to scroll distance
+		function sizeScrollbar() {
+			var remainder = scrollContent.width() - scrollPane.width();
+			var proportion = remainder / scrollContent.width();
+			var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+			scrollbar.find( ".ui-slider-handle" ).css({
+				width: handleSize,
+				background: "transparent",
+				border: "2px solid #654B24",
+				cursor: "move",
+				"margin-left": -handleSize / 2
+				
+			});
+			handleHelper.width( "" ).width( scrollbar.width() - handleSize );
+		}
+		//reset slider value based on scroll content position
+		function resetValue() {
+			var remainder = scrollPane.width() - scrollContent.width();
+			var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+				parseInt( scrollContent.css( "margin-left" ) );
+			var percentage = Math.round( leftVal / remainder * 100 );
+			scrollbar.slider( "value", percentage );
+		}
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent() {
+				var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+				var gap = scrollPane.width() - showing;
+				if ( gap > 0 ) {
+					scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+				}
+		}
+		//change handle position on window resize
+		$( window ).resize(function() {
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+		//--------------------------all about slider effect-------------------------------------------------
+		//--------------------------draggable and droppable-------------------------------------------------
+		$(".friendList_cell").draggable({
+									helper:"clone",
+									zIndex:1000 });
+		$(".scroll-content-item").droppable({
+			hoverClass: "ui-state-active",
+			drop: function( event, ui ) {
+				//if there is no friends in this program, remove the <p> tag first
+				$(this).find(".friendsDiv").find("p").remove();
+				//accept the dropped friends, check the dulplication first
+				if(($(this).find(".friendsDiv").html().indexOf(ui.draggable.context.innerHTML.substring(ui.draggable.context.innerHTML.indexOf("<span"),ui.draggable.context.innerHTML.indexOf("</span>")))) == -1){
+					$(this).find(".friendsDiv").append(ui.draggable.clone()).children("li").draggable({  
+										scroll: true,
+										helper:"clone",
+										zIndex:1000 });
+					//change the icon from gray to normal. Since somefriends may not online, they icon are gray	
+					$(this).find(".friendsDiv li").removeClass("friendOffline");	
+					$(this).find(".friendsCounter").html((parseInt($(this).find(".friendsCounter").html())+1));	
+					//pop up the icon
+					var eleOffset = $(this).offset();
+					$("#infoWindow2").show();
+					$("#infoWindow2").css("left",(eleOffset.left+10)+"px").css("top",(eleOffset.top-10)+"px").animate({top:(eleOffset.top-30)+"px"}, "slow");
+					setTimeout(function(){$("#infoWindow2").hide();},1500);
+				}
+				else{
+					//show the warning that the friend is already in the list.
+					var eleOffset = $(this).offset();
+					$("#infoWindow3").css("left",(eleOffset.left-((210-$(this).width())/2))+"px").css("top",(eleOffset.top+100)+"px").show();
+					setTimeout(function(){$("#infoWindow3").fadeOut('slow');},600);		
+				}
+			},
+		});
+		
+		//--------------------------draggable and droppable-------------------------------------------------
+		//--------------------------others functionality-------------------------------------------------
+		//favoriate icon
+		$(".favIcon").click(function(){
+			var eleOffset = $(this).offset();
+			if($(this).attr("src")=="png/onebit_46.png"){
+				//add code about adding favorite
+				$(this).attr("src","png/onebit_44.png");
+				$("#infoWindow1").html(" ").html("Add Favorite").css("left",(eleOffset.left-10)+"px").css("top",(eleOffset.top-20)+"px").show();
+				setTimeout(function(){$("#infoWindow1").fadeOut('slow');},600);
+				
+			}
+			else{
+				//add code about removing favorite
+				$(this).attr("src","png/onebit_46.png");
+				$("#infoWindow1").html(" ").html("Remove Favorite").css("left",(eleOffset.left-10)+"px").css("top",(eleOffset.top-20)+"px").show();
+				setTimeout(function(){$("#infoWindow1").fadeOut('slow');},600);
+			}
+			});
+		$(".friendsIcon").click(function(){
+			var eleOffset = $(this).offset();
+			$("#friendsWindow")
+			.show()
+			.css("left",(eleOffset.left+40)+"px").css("top",eleOffset.top+"px")
+			.children("div")
+			.html(" ")
+			.append($(this).nextAll(".friendsDiv").clone())
+			.find("li").draggable({  
+									scroll: true,
+									helper:"clone",
+									zIndex:1000 });
+			});
+		$("#friendsWindowClose").click(function(){
+			$("#friendsWindow").hide('slide',1000)
+			})
+		//--------------------------others functionality-------------------------------------------------
+	
+	});
+		
+	});
+	
+</script>
+</head>
+
+<body>
+
+<div class="mainDiv" style="width:1240px;height:620px;display:inline-block;">
+	<div class="mainDivLeft">
+    	<div style="width:156px; border:1px solid #D4D1BF; border-radius: 6px;;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2); text-align:center; vertical-align:middle; font-size:18px; color: #453821; font-weight: bold; height:21px;">Channel</div>
+	</div>
+	<div class="mainDivMIddle">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-top">
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+            	<div class="scroll-content" id="timeline"></div>
+				<div class="scroll-bar"></div>
+			</div>
+		<!--<div class="scroll-content">
+            <div class="scroll-content-item ui-widget-header" style="left:650px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>Discovery</p><p>7:00 p.m - 8:00 p.m</p></div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+            	</div>
+            </div>
+            <div class="scroll-content-item ui-widget-header" style="float:right; width:30px;">>></div>   
+		</div>
+    	<div class="scroll-content">
+			<div class="scroll-content-item ui-widget-header" style="left:850px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>Game of Throne</p><p>8:00 p.m - 9:00 p.m</p> </div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+                </div>
+            </div>
+            <div class="scroll-content-item ui-widget-header" style="left:1650px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>Born Dead</p><p>11:00 p.m - 12:00 p.m</p></div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+                </div>
+            </div>
+                <div class="scroll-content-item ui-widget-header" style="float:right; width:30px;">>></div>   
+		</div>
+   	 	<div class="scroll-content">
+			<div class="scroll-content-item ui-widget-header" style="left:450px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>Fringe</p><p>5:00 p.m - 6:00 p.m</p></div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+                </div>
+            </div>
+       	    <div class="scroll-content-item ui-widget-header" style="left:150px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>American Dad</p><p>3:00 p.m - 4:00 p.m</p></div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+                </div>
+            </div>
+   			<div class="scroll-content-item ui-widget-header" style="float:right; width:30px;">>></div>            
+        </div>
+        <div class="scroll-content">
+            <div class="scroll-content-item ui-widget-header" style="left:650px; position:absolute; width: 174px;">
+            	<div class="scroll-content-item-upper"><p>CCTV</p><p>7:00 p.m - 8:00 p.m</p></div>
+                <div class="scroll-content-item-bottom"><img src="png/onebit_46.png" class="favIcon"/><img src="png/onebit_17.png" class="friendsIcon"/><span class="friendsCounter">0</span><div class="friendsDiv"><p>Currently have no friends here</p></div>
+                </div>
+            </div>
+            <div class="scroll-content-item ui-widget-header" style="float:right; width:30px;">>></div>   
+		</div>-->
+	</div>
+    </div>
+	<div class="mainDivRight">
+	
+    </div>
+    <div id="friendsWindow"><img id="friendsWindowClose" src="png/onebit_33.png" /><div></div></div>
+    <div id="infoWindow1">Add favorite</div>
+    <div id="infoWindow2"><img src="png/onebit_31.png" /></div>
+    <div id="infoWindow3">the friend is already in the list</div>
+</div>
+</body>
+</html>
